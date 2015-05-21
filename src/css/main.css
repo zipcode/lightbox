@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #333;
+  padding: 0.2cm;
+  height: 1cm;
+}
+
+header > h1 {
+  margin: 0;
+  padding: 0;
+  color: #eee;
+  font-family: sans-serif;
+  font-weight: normal;
+}
+
+header > div {
+  right: 0.2cm;
+  top: 0.2cm;
+  position: absolute;
+  font-family: courier;
+  color: white;
+}
+
+header > div a:visited {
+  color: inherit;
+}
+
+main {
+  width: 100%;
+  height: calc(100vh - 1.4cm);
+}

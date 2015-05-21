@@ -1,0 +1,69 @@
+2015-05-20
+12:20
+
+Initiating project from github.
+
+The baseline objective of this project is to solve a problem set as a coding
+exercise by Slack which I had initially turned down due to the time burden.
+
+The core exercise is:
+  * Create a lightbox view which shows images
+  * The lightbox should source images from a public API
+  * The lightbox should show the title
+  * It should be possible to move between photos
+  * No external libraries should be used
+
+My preferred additional constraints are:
+  * There should be providers for each API
+  * The title should be shown over the text with a subtle gradient
+  * Keybindings should work
+  * It should be usable on a phone
+  * It should handle failure well
+  * It should handle infinite streams
+  * It should gracefully handle large photos of various sizes
+  * Multiple lightboxes on a page should work
+  * Document it properly and push it to Bower
+
+Iteration zero should:
+  * Fake the API calls
+  * Use coloured divs
+  * Make good use of HTML5 elements.
+
+NOTE: Add a README to this default template so I know to run npm install and
+bower install next time.  Also, es6 classes need extra stuff required.
+
+Creating initial demo page.
+Created an initial Lightbox element with callback cycle stuff.
+
+Decision: the 'provider' attribute should be a string that providers may match
+against. This way there is one source of truth for provider and configuration.
+If there were two, they could have different states and get out of sync.
+
+Actually, what if I wanted several providers?  Let's think about that later…
+
+13:25
+Designing a provider API. The provider must be asynchronous. We have three
+states: loading, success, failure.
+Let's keep track of the states through the attrs, that way we can match on them
+using CSS.
+
+Now I need CSS.  Using SASS, mostly because I know @nex3.
+
+14:05 Taking a break.
+
+15:00
+Got sidetracked on the sizing. Instead working on the display component
+and state changes.
+16:00 stopped
+
+18:00 Working on CSS again.
+18:35 Oh it's so pretty
+
+23:30 Weird bug: the click boxes don't go where they're meant to but if I
+remove the 'absolute' position and replace it, they do
+
+2015-05-21
+10:45 So this was entirely heavy on external tooling and stuff that's not
+cross-browser. I'm starting over with what I've learned.
+
+I really liked making the state machines explicit.
