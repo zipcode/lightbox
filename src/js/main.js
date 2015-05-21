@@ -5,7 +5,7 @@ window.log = function () {
 }
 
 function main () {
-  Lightbox.attach(document.body);
+  Lightbox.attach();
 }
 
 document.addEventListener("DOMContentLoaded", main);
