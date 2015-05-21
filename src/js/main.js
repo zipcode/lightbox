@@ -1,7 +1,11 @@
 'use strict';
 
+window.log = function () {
+  console.log.apply(console, arguments);
+}
+
 function main () {
-  console.log("Loaded");
+  Lightbox.attach(document.body);
 }
 
 document.addEventListener("DOMContentLoaded", main);
