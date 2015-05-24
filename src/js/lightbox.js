@@ -37,37 +37,16 @@ window.Lightbox = (function () {
     return element.view;
   }
 
-  // Make a View usable as an element.
-  // This provides an "attach" method.
-  function addAttacher(view, name) {
-    if (!(view instanceof Function && typeof name == "string")) {
-      throw new Error("Missing or incorrect arguments for addAttacher()");
-    }
-    var attacher = function (node) {
-      var target = "" + prefix + name;
-      node = node || document.body;
-      var targets = node.querySelectorAll('[' + target + ']');
-      for (var i = 0; i < targets.length; i++) {
-        var target = targets[i];
-        if (View.for(target)) continue;
-        new view(target);
-      }
-    }
-    view.attach = attacher;
-  }
-
   function Lightbox(element) {
     View.call(this, element);
   }
   Lightbox.prototype = Object.create(View.prototype);
-  addAttacher(Lightbox, "lightbox");
 
   // LoadingView stuff
   function LoadingView(element) {
     View.call(this, element)
   }
   LoadingView.prototype = Object.create(View.prototype);
-  addAttacher(LoadingView, "loading");
 
   return Lightbox;
 })();

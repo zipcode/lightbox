@@ -5,7 +5,8 @@ window.log = function () {
 }
 
 function main () {
-  Lightbox.attach();
+  var elem = document.querySelector('[zip-lightbox]');
+  new Lightbox(elem);
 }
 
 document.addEventListener("DOMContentLoaded", main);
