@@ -126,12 +126,12 @@ window.Lightbox = (function () {
     View.call(this, element);
     this.provider = provider;
     this.element.setAttribute("class", "zip-lightbox-display");
+    this.showArrows();
     this.display();
   }
   DisplayImagesView.prototype = Object.create(View.prototype);
   DisplayImagesView.prototype.display = function () {
     var image = this.provider.image();
-    console.log(image);
     if (this.image) {
       this.image.element.remove();
     }
@@ -148,6 +148,21 @@ window.Lightbox = (function () {
     this.provider.last();
     return this.display();
   }
+  DisplayImagesView.prototype.showArrows = function () {
+    var self = this;
+    function makeArrow (directionMethod) {
+      var box = document.createElement("div");
+      var arrow = document.createElement("span");
+      box.appendChild(arrow);
+      box.addEventListener("click", function () {
+        self[directionMethod].call(self);
+      });
+      box.setAttribute("class", "arrow " + directionMethod);
+      return box;
+    }
+    this.element.appendChild(makeArrow("last"));
+    this.element.appendChild(makeArrow("next"));
+  }
 
   // Providers and ImageViews
   // Providers are a source of data.
@@ -159,6 +174,7 @@ window.Lightbox = (function () {
   function ColorView(element, color) {
     ImageView.call(this, element);
     this.element.style.backgroundColor = color;
+    this.element.setAttribute("caption", color);
   }
   ColorView.prototype = Object.create(ImageView.prototype);
 

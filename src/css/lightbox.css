@@ -73,3 +73,46 @@ div[zip-lightbox] {
   width: 100%;
   height: 100%;
 }
+
+.zip-lightbox-display {
+  position: relative;
+}
+
+.zip-lightbox-display > div.arrow {
+  z-index: 2;
+  position: absolute;
+  width: 50%;
+  top: 0;
+  bottom: 0;
+}
+
+.zip-lightbox-display > div.last {
+  left: 0;
+}
+
+.zip-lightbox-display > div.arrow > span:before {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 400%;
+  font-weight: bold;
+  display: none;
+}
+
+.zip-lightbox-display > div.arrow:not(.end):hover > span:before {
+  display: initial;
+}
+
+.zip-lightbox-display > div.last > span:before {
+  left: 0;
+  content: "<";
+}
+
+.zip-lightbox-display > div.next {
+  right: 0;
+}
+
+.zip-lightbox-display > div.next > span:before {
+  right: 0;
+  content: ">";
+}
