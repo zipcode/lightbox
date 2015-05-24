@@ -1,8 +1,6 @@
 'use strict';
 
 window.Lightbox = (function () {
-  var prefix = "zip-";
-
   /*
   A very thin View class.  The View wraps an element, keeps up the connection
   between that element and the custom class around it, and also will fire
@@ -76,10 +74,12 @@ window.Lightbox = (function () {
       this.element.appendChild(this.view.element);
     } else {
       console.log("No view for ", state);
+      this.setState("failure", "Internal Error");
     }
   };
 
   Lightbox.prototype.loadSrc = function (src) {
+    console.log("Loading src: ", src);
     var self = this;
     this.setState("loading");
     var timeout = window.setTimeout(function () {
@@ -127,6 +127,7 @@ window.Lightbox = (function () {
     this.provider = provider;
     this.element.setAttribute("class", "zip-lightbox-display");
     this.showArrows();
+    this.registerKeys();
     this.display();
   }
   DisplayImagesView.prototype = Object.create(View.prototype);
@@ -162,6 +163,22 @@ window.Lightbox = (function () {
     }
     this.element.appendChild(makeArrow("last"));
     this.element.appendChild(makeArrow("next"));
+  }
+  DisplayImagesView.prototype.registerKeys = function () {
+    var self = this;
+    function listener (event) {
+      if (self.element.parentNode === undefined) {
+        console.log("Unregistering listener");
+        document.removeEventListener("keyup", listener);
+      }
+      var key = event.keyCode || event.which;
+      if (key == 37) {
+        self.last();
+      } else if (key == 39) {
+        self.next();
+      }
+    }
+    document.addEventListener("keyup", listener);
   }
 
   // Providers and ImageViews
