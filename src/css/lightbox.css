@@ -1,6 +1,70 @@
 div[zip-lightbox] {
-  background: red;
+  background: #ddd;
   min-height: 200px;
   width: 100%;
   height: 100%;
+}
+
+@-webkit-keyframes pulsate {
+  0% { color: #222; }
+  100% { color: #446; }
+}
+
+@-moz-keyframes pulsate {
+  0% { color: #222; }
+  100% { color: #446; }
+}
+
+@-ms-keyframes pulsate {
+  0% { color: #222; }
+  100% { color: #446; }
+}
+
+@keyframes pulsate {
+  0% { color: #222; }
+  100% { color: #446; }
+}
+
+.zip-lightbox-loading {
+  font-size: 1000%;
+}
+
+.zip-lightbox-failure {
+  font-size: 400%;
+}
+
+.zip-lightbox-loading, .zip-lightbox-failure {
+  display: block;
+  font-weight: bold;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  text-shadow: 0 0 10px rgba(128, 128, 128, 0.5);
+  color: #222;
+}
+
+.zip-lightbox-loading > span {
+  -webkit-animation: pulsate 1.5s linear alternate infinite;
+  -moz-animation: pulsate 1.5s linear alternate infinite;
+  -ms-animation: pulsate 1.5s linear alternate infinite;
+  animation: pulsate 1.5s linear alternate infinite;
+  vertical-align: middle;
+}
+
+.zip-lightbox-loading > span:first-child, .zip-lightbox-loading > span:last-child {
+  font-size: 80%;
+}
+
+.zip-lightbox-loading > span:nth-of-type(3n) {
+  -webkit-animation-delay: 1s;
+  -moz-animation-delay: 1s;
+  animation-delay: 1s;
+}
+
+.zip-lightbox-loading > span:nth-of-type(3n+2) {
+  -webkit-animation-delay: 0.5s;
+  -moz-animation-delay: 0.5s;
+  animation-delay: 0.5s;
 }
