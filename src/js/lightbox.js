@@ -66,6 +66,7 @@ window.Lightbox = (function () {
     var view = ({
       "failure": FailureView,
       "loading": LoadingView,
+      "success": DisplayImagesView,
     })[state];
     if (this.view !== undefined) {
       this.view.element.remove();
@@ -84,14 +85,17 @@ window.Lightbox = (function () {
     var timeout = window.setTimeout(function () {
       self.setState("failure", "Timeout");
     }, 10000);
-    var success = function () {
-      window.cancelTimeout(timeout);
-      window.setState("success");
+    var success = function (data) {
+      window.clearTimeout(timeout);
+      self.setState("success", data);
     };
     var failure = function (reason) {
-      window.cancelTimeout(timeout);
+      window.clearTimeout(timeout);
       self.setState("failure", "Failure: " + reason);
     };
+
+    // PROVIDER SELECTION GOES HERE
+    new ColorProvider(success, failure);
   };
 
   // LoadingView stuff
@@ -116,6 +120,96 @@ window.Lightbox = (function () {
     this.element.setAttribute("class", "zip-lightbox-failure");
   }
   FailureView.prototype = Object.create(View.prototype);
+
+  // DisplayImagesView stuff
+  function DisplayImagesView(element, provider) {
+    View.call(this, element);
+    this.provider = provider;
+    this.element.setAttribute("class", "zip-lightbox-display");
+    this.display();
+  }
+  DisplayImagesView.prototype = Object.create(View.prototype);
+  DisplayImagesView.prototype.display = function () {
+    var image = this.provider.image();
+    console.log(image);
+    if (this.image) {
+      this.image.element.remove();
+    }
+    if (image) {
+      this.image = image;
+      this.element.appendChild(image.element);
+    }
+  }
+  DisplayImagesView.prototype.next = function () {
+    this.provider.next();
+    return this.display();
+  }
+  DisplayImagesView.prototype.last = function () {
+    this.provider.last();
+    return this.display();
+  }
+
+  // Providers and ImageViews
+  // Providers are a source of data.
+  function ImageView(element) {
+    View.call(this, element);
+  }
+  ImageView.prototype = Object.create(View.prototype);
+
+  function ColorView(element, color) {
+    ImageView.call(this, element);
+    this.element.style.backgroundColor = color;
+  }
+  ColorView.prototype = Object.create(ImageView.prototype);
+
+  function Provider() {
+    if (!(this instanceof Provider)) {
+      throw new Error("Attempted to call Provider() without 'new'");
+    }
+    this.index = 0;
+  }
+  Provider.prototype = {};
+  Provider.prototype.image = function () {};
+  Provider.prototype.hasNext = function () {
+    return this.index < (this.length - 1);
+  }
+  Provider.prototype.hasLast = function () {
+    return this.index > 0;
+  }
+  Provider.prototype.next = function () {
+    this.index = Math.min(this.length, this.index + 1);
+    return this;
+  }
+  Provider.prototype.last = function () {
+    this.index = Math.max(0, this.index - 1);
+    return this;
+  }
+
+  function ColorProvider(success, failure) {
+    Provider.call(this);
+
+    this.index = 0;
+    this.colors = [];
+    for (var i = 0; i < 10; i++) {
+      var r = Math.floor(Math.random() * 255);
+      var g = Math.floor(Math.random() * 255);
+      var b = Math.floor(Math.random() * 255);
+      var color = "rgb(" + r + ", " + g + ", " + b + ")";
+      this.colors[i] = color;
+    }
+
+    success(this);
+  }
+  ColorProvider.prototype = Object.create(Provider.prototype);
+  Object.defineProperty(ColorProvider.prototype, "color", {
+    get: function () { return this.colors[this.index]; }
+  });
+  Object.defineProperty(ColorProvider.prototype, "length", {
+    get: function () { return this.colors.length; }
+  });
+  ColorProvider.prototype.image = function () {
+    return new ColorView(undefined, this.color);
+  }
 
   return Lightbox;
 })();
