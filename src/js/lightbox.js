@@ -113,7 +113,7 @@ window.Lightbox = (function () {
   function FailureView(element, reason) {
     View.call(this, element);
 
-    this.element.innerText = reason;
+    this.element.textContent = reason;
     this.element.setAttribute("class", "zip-lightbox-failure");
   }
   FailureView.prototype = Object.create(View.prototype);

@@ -25,7 +25,7 @@ header > div {
   color: white;
 }
 
-header > div a:visited {
+header > div a {
   color: inherit;
 }
 
