@@ -94,9 +94,10 @@ div[zip-lightbox] {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 400%;
+  font-size: 200%;
   font-weight: bold;
   display: none;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .zip-lightbox-display > div.arrow:not(.end):hover > span:before {

@@ -221,14 +221,8 @@ window.Lightbox = (function () {
   }
   Provider.prototype = {};
   Provider.prototype.image = function () {};
-  Provider.prototype.hasNext = function () {
-    return this.index < (this.length - 1);
-  };
-  Provider.prototype.hasLast = function () {
-    return this.index > 0;
-  };
   Provider.prototype.next = function () {
-    this.index = Math.min(this.length, this.index + 1);
+    this.index = Math.min(this.length - 1, this.index + 1);
     return this;
   };
   Provider.prototype.last = function () {
