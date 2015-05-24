@@ -3,6 +3,11 @@
 window.Lightbox = (function () {
   var prefix = "zip-";
 
+  /*
+  A very thin View class.  The View wraps an element, keeps up the connection
+  between that element and the custom class around it, and also will fire
+  an event or two if the element's attributes are changed.
+  */
   function View(element) {
     if (!(this instanceof View)) {
       throw new Error("Called a View() or subclass without new");
@@ -50,8 +55,8 @@ window.Lightbox = (function () {
   Lightbox.prototype = Object.create(View.prototype);
 
   Lightbox.prototype.onAttributeChange = function(name, newVal) {
-    if (this.handlers[name] instanceof Function) {
-      return this.handlers[name].call(this, newVal);
+    if (name === "src") {
+      this.loadSrc(newVal);
     }
   };
 
@@ -88,12 +93,6 @@ window.Lightbox = (function () {
       self.setState("failure", "Failure: " + reason);
     };
   };
-
-  Lightbox.prototype.handlers = {
-    src: function (src) {
-      this.loadSrc(src);
-    },
-  }
 
   // LoadingView stuff
   function LoadingView(element) {

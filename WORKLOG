@@ -67,3 +67,9 @@ remove the 'absolute' position and replace it, they do
 cross-browser. I'm starting over with what I've learned.
 
 I really liked making the state machines explicit.
+
+2015-05-23
+Refactored this so that it doesn't rely on custom elements.  Instead we maintain
+an internal state machine and also leverage some monitoring to spot changes to
+the "src" attribute.  It's not crucial to how this works, but it's a nice detail
+that makes this behave more like a real element.
