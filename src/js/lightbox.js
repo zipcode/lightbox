@@ -128,27 +128,45 @@ window.Lightbox = (function () {
     this.element.setAttribute("class", "zip-lightbox-display");
     this.showArrows();
     this.registerKeys();
+    this.addCaption();
     this.display();
   }
   DisplayImagesView.prototype = Object.create(View.prototype);
   DisplayImagesView.prototype.display = function () {
     var image = this.provider.image();
+    this.setCaption();
     if (this.image) {
       this.image.element.remove();
     }
     if (image) {
       this.image = image;
       this.element.appendChild(image.element);
+      var caption = image.element.attributes.caption;
+      if (caption) {
+        this.setCaption(caption.value);
+      }
     }
-  }
+  };
   DisplayImagesView.prototype.next = function () {
     this.provider.next();
     return this.display();
-  }
+  };
   DisplayImagesView.prototype.last = function () {
     this.provider.last();
     return this.display();
-  }
+  };
+  DisplayImagesView.prototype.setCaption = function () {};
+  DisplayImagesView.prototype.addCaption = function () {
+    var self = this;
+    var captionBox = document.createElement("div");
+    captionBox.setAttribute("class", "caption");
+    var captionText = document.createElement("span");
+    captionBox.appendChild(captionText);
+    this.setCaption = function (text) {
+      captionText.textContent = text;
+    };
+    this.element.appendChild(captionBox);
+  };
   DisplayImagesView.prototype.showArrows = function () {
     var self = this;
     function makeArrow (directionMethod) {
@@ -163,7 +181,7 @@ window.Lightbox = (function () {
     }
     this.element.appendChild(makeArrow("last"));
     this.element.appendChild(makeArrow("next"));
-  }
+  };
   DisplayImagesView.prototype.registerKeys = function () {
     var self = this;
     function listener (event) {
@@ -179,7 +197,7 @@ window.Lightbox = (function () {
       }
     }
     document.addEventListener("keyup", listener);
-  }
+  };
 
   // Providers and ImageViews
   // Providers are a source of data.
@@ -205,18 +223,18 @@ window.Lightbox = (function () {
   Provider.prototype.image = function () {};
   Provider.prototype.hasNext = function () {
     return this.index < (this.length - 1);
-  }
+  };
   Provider.prototype.hasLast = function () {
     return this.index > 0;
-  }
+  };
   Provider.prototype.next = function () {
     this.index = Math.min(this.length, this.index + 1);
     return this;
-  }
+  };
   Provider.prototype.last = function () {
     this.index = Math.max(0, this.index - 1);
     return this;
-  }
+  };
 
   function ColorProvider(success, failure) {
     Provider.call(this);
@@ -242,7 +260,7 @@ window.Lightbox = (function () {
   });
   ColorProvider.prototype.image = function () {
     return new ColorView(undefined, this.color);
-  }
+  };
 
   return Lightbox;
 })();
